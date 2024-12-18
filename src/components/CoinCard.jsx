@@ -1,7 +1,7 @@
 export default function CoinCard({ coin }) {
   // body
   return (
-    <div className="flex-none w-[300px] mx-2 bg-gray-800 shadow-lg rounded-lg p-6 mb-6 text-white">
+    <div className="flex-none mx-2 bg-gradient-to-b from-black from-30% to-yellow-500 shadow-lg rounded-lg p-6 mb-6 text-white text-center border-2 border-yellow-500">
       <div className="flex items-center mb-4">
         <img
           src={coin.image}
@@ -87,7 +87,7 @@ export default function CoinCard({ coin }) {
           <span className="text-yellow-500">
             {coin.circulating_supply.toLocaleString()}
           </span>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-black">
             The number of coins currently in circulation.
           </p>
         </div>
@@ -106,7 +106,7 @@ export default function CoinCard({ coin }) {
           >
             {coin.market_cap_change_percentage_24h.toFixed(2)}%
           </span>
-          <p className="text-sm text-gray-400">
+          <p className="text-sm text-black">
             Change in market capitalization over the last 24 hours.
           </p>
         </div>
@@ -118,8 +118,8 @@ export default function CoinCard({ coin }) {
           <span className="font-semibold text-gray-300">
             ATH (All-Time High):
           </span>
-          <span className="text-yellow-500">${coin.ath}</span>
-          <p className="text-sm text-gray-400">
+          <span className="text-yellow-900">${coin.ath}</span>
+          <p className="text-sm text-black">
             The highest price {coin.name} has ever reached.
           </p>
         </div>
@@ -129,8 +129,8 @@ export default function CoinCard({ coin }) {
           <span className="font-semibold text-gray-300">
             ATL (All-Time Low):
           </span>
-          <span className="text-yellow-500">${coin.atl}</span>
-          <p className="text-sm text-gray-400">
+          <span className="text-yellow-900">${coin.atl}</span>
+          <p className="text-sm text-black">
             The lowest price {coin.name} has ever reached.
           </p>
         </div>
