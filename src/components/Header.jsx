@@ -1,4 +1,4 @@
-import ethladImg from "../assets/ethland.png";
+import ethladImg from "../assets/ethli.png";
 
 export default function Header() {
   const navItems = [
@@ -19,7 +19,7 @@ export default function Header() {
         <img
           src={ethladImg}
           alt="EthLand Logo"
-          className="w-16 h-16 mr-4 
+          className="w-24 h-24 mr-4 
         transition-all duration-300 
         hover:rotate-6 
         hover:scale-110 
