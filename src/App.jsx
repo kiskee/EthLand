@@ -57,7 +57,7 @@ function App() {
           <div className="text-center text-gray-400">Loading...</div>
         )}
       </div>
-        <CandlestickChart coin="ETHUSDT" interval="1m"/>
+        <CandlestickChart coin="BTCUSDT" interval="1m"/>
       {/* Pie de página */}
       <footer className="mt-8 text-center text-gray-500 text-sm">
         <p>

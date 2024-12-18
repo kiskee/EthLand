@@ -1,23 +1,34 @@
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 
-export default function CandlestickChart({ coin, interval }) {
+export default function CandlestickChart({ coin , interval = "5m" }) {
   const chartContainerRef = useRef(null);
   const candlestickSeriesRef = useRef(null);
 
+  const toUTC5 = (timestamp) => {
+    const date = new Date(timestamp * 1000);
+    // Convertir UTC a UTC-5
+    const utc5Offset = -5 * 60; // Desplazamiento en minutos
+    const localDate = new Date(date.getTime() + utc5Offset * 60 * 1000);
+    return Math.floor(localDate.getTime() / 1000);
+  };
+
   useEffect(() => {
-    // Configurar el gráfico
     const chart = createChart(chartContainerRef.current, {
-      width: 800,
-      height: 600,
       layout: {
         textColor: "black",
         background: { type: "solid", color: "white" },
       },
+      timeScale: {
+        timeVisible: true, // Mostrar horas
+        secondsVisible: false, // Ocultar segundos
+      },
+      localization: {
+        dateFormat: "yyyy-MM-dd HH:mm", // Formato de fecha/hora
+      },
     });
 
-    // Crear la serie de velas
-    candlestickSeriesRef.current = chart.addCandlestickSeries({
+    const candlestickSeries = chart.addCandlestickSeries({
       upColor: "#26a69a",
       downColor: "#ef5350",
       borderVisible: true,
@@ -25,70 +36,78 @@ export default function CandlestickChart({ coin, interval }) {
       wickDownColor: "#ef5350",
     });
 
+    candlestickSeriesRef.current = candlestickSeries;
     chart.timeScale().fitContent();
 
-    // Obtener datos históricos al montar el componente
     const fetchHistoricalData = async () => {
-      const response = await fetch(
-        `https://api.binance.com/api/v3/klines?symbol=${coin}&interval=${interval}&limit=9000`
-      );
-      const data = await response.json();
+      try {
+        const response = await fetch(
+          `https://api.binance.com/api/v3/klines?symbol=${coin}&interval=${interval}&limit=1000`
+        );
+        const data = await response.json();
 
-      // Transformar los datos al formato esperado por Lightweight Charts
-      const formattedData = data.map((kline) => ({
-        time: kline[0] / 1000, // Convertir de milisegundos a segundos
-        open: parseFloat(kline[1]),
-        high: parseFloat(kline[2]),
-        low: parseFloat(kline[3]),
-        close: parseFloat(kline[4]),
-      }));
+        const formattedData = data.map((kline) => ({
+          time: toUTC5(kline[0] / 1000), // Ajustar a UTC-5
+          open: parseFloat(kline[1]),
+          high: parseFloat(kline[2]),
+          low: parseFloat(kline[3]),
+          close: parseFloat(kline[4]),
+        }));
 
-      // Establecer los datos históricos en la serie
-      candlestickSeriesRef.current.setData(formattedData);
+        candlestickSeries.setData(formattedData);
+      } catch (error) {
+        console.error("Error fetching historical data:", error);
+      }
     };
 
     fetchHistoricalData();
 
-    return () => chart.remove();
-  }, []);
+    const handleResize = () => {
+      chart.applyOptions({
+        width: chartContainerRef.current.clientWidth,
+        height: chartContainerRef.current.clientHeight,
+      });
+    };
+
+    window.addEventListener("resize", handleResize);
+    handleResize();
+
+    return () => {
+      window.removeEventListener("resize", handleResize);
+      chart.remove();
+    };
+  }, [coin, interval]);
 
   useEffect(() => {
-    // Stream de WebSocket para datos en tiempo real
-    const binanceSocket = new WebSocket(
-      "wss://stream.binance.com:9443/ws/ethusdt@kline_1m"
+    const socket = new WebSocket(
+      `wss://stream.binance.com:9443/ws/${coin.toLowerCase()}@kline_${interval}`
     );
 
-    binanceSocket.onmessage = (e) => {
-      const messageObj = JSON.parse(e.data);
-
-      if (messageObj.k && candlestickSeriesRef.current) {
-        const kline = messageObj.k;
-
-        // Formatear datos en el formato esperado por Lightweight Charts
+    socket.onmessage = (event) => {
+      const data = JSON.parse(event.data);
+      if (data.k) {
+        const kline = data.k;
         const newCandle = {
-          time: kline.t / 1000, // Convertir de milisegundos a segundos
+          time: toUTC5(kline.t / 1000), // Ajustar a UTC-5
           open: parseFloat(kline.o),
           high: parseFloat(kline.h),
           low: parseFloat(kline.l),
           close: parseFloat(kline.c),
         };
-
-        // Añadir la nueva vela al gráfico
-        candlestickSeriesRef.current.update(newCandle);
+        candlestickSeriesRef.current?.update(newCandle);
       }
     };
 
-    // Cleanup: cerrar el socket al desmontar el componente
-    return () => {
-      binanceSocket.close();
-    };
-  }, []);
+    socket.onerror = (error) => console.error("WebSocket error:", error);
+    socket.onclose = () => console.log("WebSocket closed");
+
+    return () => socket.close();
+  }, [coin, interval]);
 
   return (
-    <div
-      className="border-4 border-yellow-500 flex justify-center items-center mx-auto"
+    <div className="flex justify-center items-center mx-auto"
       ref={chartContainerRef}
-      style={{ width: "810px", height: "610px" }}
+      style={{ width: "70%", height: "500px" }}
     />
   );
 }
