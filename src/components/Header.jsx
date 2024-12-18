@@ -5,11 +5,12 @@ export default function Header() {
     { name: "Home", path: "/" },
     { name: "Charts", path: "/charts" },
     { name: "Strategies", path: "/strategies" },
-    { name: "News", path: "/news" }
+    { name: "News", path: "/news" },
   ];
   // body
+  // bg-gradient-to-r from-black via-black to-yellow-900/10 opacity-20
   return (
-    <header className="flex items-center justify-between px-8 py-4 bg-black border-b border-yellow-500/20 relativen">
+    <header className="flex items-center justify-between px-8 py-4 bg-black border-b-2 border-yellow-500/40 relativen bg-gradient-to-l from-yellow-900/10 to-transparent">
       {/* Efecto de fondo con gradiente sutil */}
       <div className="absolute inset-0 bg-gradient-to-r from-black via-black to-yellow-900/10 opacity-20 pointer-events-none"></div>
 
@@ -39,7 +40,7 @@ export default function Header() {
 
       {/* Navegación central con efecto de luz */}
       <nav className="flex space-x-4 relative z-10">
-        {navItems.map(({name, path}) => (
+        {navItems.map(({ name, path }) => (
           <a
             key={name}
             href={path}
@@ -91,21 +92,6 @@ export default function Header() {
           Sign Up
         </button>
       </div>
-
-      {/* Efecto de luz lateral sutil */}
-      <div
-        className="
-    absolute 
-    right-0 
-    top-0 
-    bottom-0 
-    w-1/2 
-    bg-gradient-to-l 
-    from-yellow-900/10 
-    to-transparent 
-    pointer-events-none
-  "
-      ></div>
     </header>
   );
 }

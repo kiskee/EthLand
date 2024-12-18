@@ -27,7 +27,7 @@ export default function Home() {
         endpoint="/coins/markets"
         params={{
           vs_currency: "usd",
-          ids: "bitcoin,ethereum,cardano",
+          ids: "bitcoin,ethereum,tether,ripple",
           order: "market_cap_desc",
           per_page: 10,
           page: 1,

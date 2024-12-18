@@ -3,7 +3,8 @@ import Header from "../components/Header";
 export default function Layaut({ children }) {
   // body
   return (
-    <div className="min-h-screen bg-black p-6 text-white flex flex-col">
+    
+    <div className="min-h-screen bg-black p-6 text-white flex flex-col bg-gradient-to-l from-yellow-900/10 to-transparent">
       {/* Encabezado con el logo y el título */}
       <Header />
 
@@ -20,5 +21,6 @@ export default function Layaut({ children }) {
         </p>
       </footer>
     </div>
+    
   );
 }
