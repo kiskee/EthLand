@@ -25,7 +25,7 @@ function App() {
           alt="EthLand Logo"
           className="w-24 h-24 mr-4" // Tamaño y margen del logo
         />
-        <h1 className="text-4xl font-bold text-yellow-600">EthLand---1</h1>
+        <h1 className="text-8xl font-bold text-yellow-600">EthLand</h1>
       </header>
 
       {/* Descripción debajo del título */}
@@ -57,7 +57,7 @@ function App() {
           <div className="text-center text-gray-400">Loading...</div>
         )}
       </div>
-        <CandlestickChart/>
+        <CandlestickChart coin="ETHUSDT" interval="1m"/>
       {/* Pie de página */}
       <footer className="mt-8 text-center text-gray-500 text-sm">
         <p>

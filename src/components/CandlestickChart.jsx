@@ -1,15 +1,15 @@
 import React, { useEffect, useRef } from "react";
 import { createChart } from "lightweight-charts";
 
-export default function CandlestickChart() {
+export default function CandlestickChart({ coin, interval }) {
   const chartContainerRef = useRef(null);
   const candlestickSeriesRef = useRef(null);
 
   useEffect(() => {
     // Configurar el gráfico
     const chart = createChart(chartContainerRef.current, {
-      width: 600,
-      height: 400,
+      width: 800,
+      height: 600,
       layout: {
         textColor: "black",
         background: { type: "solid", color: "white" },
@@ -20,7 +20,7 @@ export default function CandlestickChart() {
     candlestickSeriesRef.current = chart.addCandlestickSeries({
       upColor: "#26a69a",
       downColor: "#ef5350",
-      borderVisible: false,
+      borderVisible: true,
       wickUpColor: "#26a69a",
       wickDownColor: "#ef5350",
     });
@@ -30,7 +30,7 @@ export default function CandlestickChart() {
     // Obtener datos históricos al montar el componente
     const fetchHistoricalData = async () => {
       const response = await fetch(
-        "https://api.binance.com/api/v3/klines?symbol=ETHUSDT&interval=1m&limit=1000"
+        `https://api.binance.com/api/v3/klines?symbol=${coin}&interval=${interval}&limit=9000`
       );
       const data = await response.json();
 
@@ -85,9 +85,10 @@ export default function CandlestickChart() {
   }, []);
 
   return (
-    <div>
-      <h1>Gráfico de Velas Japonesas con Datos Históricos y Tiempo Real</h1>
-      <div ref={chartContainerRef} style={{ width: "100%", height: "400px" }} />
-    </div>
+    <div
+      className="border-4 border-yellow-500 flex justify-center items-center mx-auto"
+      ref={chartContainerRef}
+      style={{ width: "810px", height: "610px" }}
+    />
   );
 }
