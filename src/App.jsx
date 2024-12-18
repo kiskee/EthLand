@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import ApiService from "./components/ApiService";
 import CoinCard from "./components/CoinCard";
 import  ethladImg  from './assets/ethland.png'
+import CandlestickChart from './components/CandlestickChart'
 
 function App() {
   const [coins, setCoins] = useState([]);
@@ -56,7 +57,7 @@ function App() {
           <div className="text-center text-gray-400">Loading...</div>
         )}
       </div>
-
+        <CandlestickChart/>
       {/* Pie de página */}
       <footer className="mt-8 text-center text-gray-500 text-sm">
         <p>
