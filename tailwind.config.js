@@ -4,9 +4,9 @@ export default {
   theme: {
     extend: {},
     screens: {
-      sss: { max: "390px" },
+      sss: { max: "350px" },
 
-      ss: { min: "390px", max: "640px" },
+      ss: { min: "350px", max: "640px" },
 
       sm: { min: "640px", max: "767px" },
       // => @media (min-width: 640px and max-width: 767px) { ... }
