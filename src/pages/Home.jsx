@@ -61,7 +61,7 @@ export default function Home() {
           placeholder="Buscar moneda (e.g., bitcoin)"
           value={searchValue}
           onChange={handleInputChange}
-          className="border p-2 rounded w-80 text-black"
+          className="border p-2 rounded w-1/3 text-black"
         />
         <button
           onClick={handleSearch}
@@ -94,7 +94,7 @@ export default function Home() {
       />
 
       {/* Contenedor que usa flexbox para mostrar las monedas en una sola fila */}
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-wrap justify-center sss:flex-col ss:flex-col sm:flex-row md:justify-center lg:justify-around xl:justify-center ">
         {/* Mapea las monedas y genera una tarjeta para cada una */}
         {coins.length > 0 ? (
           coins.map((coin) => <CoinCard key={coin.id} coin={coin} />)
