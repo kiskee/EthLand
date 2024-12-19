@@ -10,15 +10,13 @@ export default function Layaut({ children }) {
       {/* Dynamic content passed as children */}
       <div className="mt-8">{children}</div>
       {/* Pie de página */}
-      <footer className="mt-8 text-gray-500 text-sm relative">
+      <footer className="mt-8 text-gray-500 text-sm relative flex flex-col justify-center">
         <p className="text-center">
           “El éxito no se logra solo con cualidades especiales. Es sobre todo un
           trabajo de mentalidad y actitud positiva. Sigue soñando, sigue
           creyendo.”
         </p>
-        <span className="font-bold text-yellow-500 absolute right-0 top-0">
-          DanMeCoss
-        </span>
+        <span className="font-bold text-yellow-500 pt-8 right-0"><a href="https://github.com/kiskee">DanMeCoss</a></span>
       </footer>
     </div>
   );
